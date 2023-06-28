@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tavern_cli", "tavern_cli\tavern_cli.csproj", "{DA948940-0AB0-4D0D-86BB-A67769130D76}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject1", "TestProject1\TestProject1.csproj", "{5312E652-3C4E-4CEF-9FA7-71F97544678E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DA948940-0AB0-4D0D-86BB-A67769130D76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA948940-0AB0-4D0D-86BB-A67769130D76}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA948940-0AB0-4D0D-86BB-A67769130D76}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA948940-0AB0-4D0D-86BB-A67769130D76}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5312E652-3C4E-4CEF-9FA7-71F97544678E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5312E652-3C4E-4CEF-9FA7-71F97544678E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5312E652-3C4E-4CEF-9FA7-71F97544678E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5312E652-3C4E-4CEF-9FA7-71F97544678E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
