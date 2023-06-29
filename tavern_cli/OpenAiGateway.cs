@@ -1,55 +1,34 @@
 using System.Text;
 using Newtonsoft.Json;
+using OpenAI_API;
 
 namespace tavern_cli;
 
 public class OpenAiGateway
 {
     private Config? Config { get; set; }
-    private HttpClient? Client { get; set; }
+    public OpenAIAPI? Api { get; set; }
     
     public void Init()
     {
         InitConfig();
-        InitClient();
-    }
-
-    private void InitClient()
-    {
-        Client = new HttpClient();
-        Client.DefaultRequestHeaders.Authorization =
-            new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", Config?.ApiKey);
+        InitApi();
     }
 
     private void InitConfig()
     {
-        Config = JsonConvert.DeserializeObject<Config>(File.ReadAllText("Config.json"))
-                 ?? throw new InvalidOperationException("Config file invalid");
+        string json = File.ReadAllText("Config.json");
+        Console.WriteLine(json);
+        Config = JsonConvert.DeserializeObject<Config>(json);
+        if (Config == null)
+        {
+            throw new Exception("Config is null");
+        }
     }
-    
-    public async Task<string?> SendOpenAiRequest(string prompt)
+
+    private void InitApi()
     {
-        if (Client == null) 
-        {
-            throw new InvalidOperationException("Client not initialized");
-        }
-            
-        OpenAiRequest request = new OpenAiRequest
-        {
-            Prompt = new[] { prompt },
-            MaxTokens = 100
-        };
-    
-        string requestBody = JsonConvert.SerializeObject(request);
-        StringContent content = new StringContent(requestBody, Encoding.UTF8, "application/json");
-        HttpResponseMessage response = await Client.PostAsync(Config?.ServerUri, content);
-        
-        if (response.IsSuccessStatusCode)
-        {
-            string responseContent = await response.Content.ReadAsStringAsync();
-            return responseContent;
-        }
-        Console.WriteLine("Error: " + response.StatusCode);
-        return null;
+        Api = new OpenAIAPI(Config?.ApiKey);
+        Api.ApiUrlFormat = Config?.ServerUrl;
     }
 }
