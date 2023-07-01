@@ -12,7 +12,7 @@ public class Tests
     }
 
     [Test]
-    public async Task PingOpenAi()
+    public async Task SendThroughGateway()
     {
         var gateway = new OpenAiGateway();
         gateway.Init();
@@ -21,6 +21,20 @@ public class Tests
             new(ChatMessageRole.User, "Hello, I'm a user.")
         };
         var result = await gateway.SendMessages(messages);
-        Debug.WriteLine(result.ToString());
+        Assert.NotNull(result);
+        Console.WriteLine(result.ToString());
+    }
+
+    [Test]
+    public async Task SendThroughBot()
+    {
+        Bot bot = new Bot("bot.json", "config.json");
+        var result = await bot.SendMessage("Hello, Artoria. Want to go on a date?");
+        Assert.NotNull(result);
+        Console.WriteLine(result.ToString());
+        Console.WriteLine("--------------------");
+        result = await bot.SendMessage("I'll let you choose the place.");
+        Assert.NotNull(result);
+        Console.WriteLine(result.ToString());
     }
 }
