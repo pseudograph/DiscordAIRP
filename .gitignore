@@ -1,4 +1,6 @@
 .idea/
+discord_bot/bin/
+discord_bot/obj/
 tavern_cli/bin/
 tavern_cli/obj/
 TestProject1/bin/

@@ -13,12 +13,12 @@ public class OpenAiGateway
     private Model Model { get; set; } = Model.ChatGPTTurbo;
     private long? MaxRequestTokens { get; set; }
 
-    public OpenAiGateway(string configPath = "config.json")
+    public OpenAiGateway(string configPath = "TavernConfig.json")
     {
         Init(configPath);
     }
     
-    public void Init(string configPath = "config.json")
+    public void Init(string configPath = "TavernConfig.json")
     {
         InitConfig(configPath);
         InitApi();
@@ -47,6 +47,8 @@ public class OpenAiGateway
                 Messages = messages.ToArray()
             });
         } while (result.ToString().Length < 5);
+
+        Console.WriteLine(result.ToString());
 
         return result;
     }
@@ -87,10 +89,10 @@ public class OpenAiGateway
     {
         if (Api == null)
         {
-            throw new InvalidProgramException("API is null.");
-        } else if (Config == null)
+            throw new InvalidProgramException("[OpenAiGateway::IsGatewayValid]: API is null.");
+        } if (Config == null)
         {
-            throw new InvalidProgramException("Config is null.");
+            throw new InvalidProgramException("[OpenAiGateway::IsGatewayValid]: Config is null.");
         }
     }
 }

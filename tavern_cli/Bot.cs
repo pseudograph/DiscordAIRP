@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using OpenAI_API.Chat;
 
 namespace tavern_cli;
@@ -16,11 +17,13 @@ public class Bot
         CharacterCard = characterCard;
     }
 
-    public Bot(string botPath, string gatewayPath)
-    {
+    public Bot(string botPath, string gatewayPath) {
         string json = File.ReadAllText(botPath);
-        CharacterCard = JsonConvert.DeserializeObject<CharacterCard>(json)
-                 ?? throw new InvalidOperationException("CharacterCard is null");
+        var jsonObject = JObject.Parse(json);
+
+        CharacterCard = new CharacterCard();
+        CharacterCard.description = jsonObject.SelectToken("description")?.ToString();
+        CharacterCard.scenario = jsonObject.SelectToken("scenario")?.ToString();
 
         OpenAiGateway gateway = new OpenAiGateway();
         gateway.Init(gatewayPath);
@@ -32,15 +35,32 @@ public class Bot
         return SendMessage(new ChatMessage(ChatMessageRole.User, message));
     }
 
+    public async Task<ChatResult> SendBulkMessages(IList<ChatMessage> messages)
+    {
+        if (CharacterCard == null)
+        {
+            throw new InvalidProgramException("[tavern_cli::SendBulkMessages]: Character card is null.");
+        }
+        if (Gateway == null)
+        {
+            throw new InvalidProgramException("[tavern_cli::SendBulkMessages]: Gateway is null.");
+        }
+
+        var payload = CharacterCard.ToChatMessages();
+        payload.AddRange(messages);
+        var reply = await Gateway.SendMessages(payload);
+        return reply;
+    }
+
     private async Task<ChatResult> SendMessage(ChatMessage message)
     {
         if (CharacterCard == null)
         {
-            throw new InvalidProgramException("Character card is null.");
+            throw new InvalidProgramException("[tavern_cli::SendMessage]: Character card is null.");
         }
         if (Gateway == null)
         {
-            throw new InvalidProgramException("Gateway is null.");
+            throw new InvalidProgramException("[tavern_cli::SendMessage]: Gateway is null.");
         }
         
         History.Add(message);
@@ -50,5 +70,4 @@ public class Bot
         History.Add(new ChatMessage(ChatMessageRole.Assistant, reply.ToString()));
         return reply;
     }
-    
 }

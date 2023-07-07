@@ -1,0 +1,15 @@
+{
+  "ApiKey": "sk-<your key here>",
+  "ServerUrl": "https://api.openai.com/v1/chat/completions",
+  "MainPrompt": "MainPrompt",
+  "NsfwPrompt": "NsfwPrompt",
+  "SystemPrompt": "SystemPrompt",
+  "Model": "turbo",
+  "Temperature": 0.9,
+  "MaxTokens": 1000,
+  "FrequencyPenalty": 0.75,
+  "PresencePenalty": 0.75,
+  "LogitBias": {
+  }
+}
+

@@ -1,5 +1,5 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=36bfacb0_002D9042_002D4c37_002Daee3_002Dc97c2c0d4533/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="SendThroughBot" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=36bfacb0_002D9042_002D4c37_002Daee3_002Dc97c2c0d4533/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="SendThroughBot" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;TestAncestor&gt;
     &lt;TestId&gt;NUnit3x::5312E652-3C4E-4CEF-9FA7-71F97544678E::net7.0::TestProject1.Tests.SendThroughBot&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
@@ -9,7 +9,7 @@
     &lt;TestId&gt;NUnit3x::5312E652-3C4E-4CEF-9FA7-71F97544678E::net7.0::TestProject1.Tests.PingOpenAi&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=875c43fa_002Dfdc1_002D4d7f_002Dac69_002Dfd11c2754487/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="PingOpenAi" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=875c43fa_002Dfdc1_002D4d7f_002Dac69_002Dfd11c2754487/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="PingOpenAi" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;TestAncestor&gt;
     &lt;TestId&gt;NUnit3x::5312E652-3C4E-4CEF-9FA7-71F97544678E::net7.0::TestProject1.Tests.SendThroughBot&lt;/TestId&gt;
   &lt;/TestAncestor&gt;

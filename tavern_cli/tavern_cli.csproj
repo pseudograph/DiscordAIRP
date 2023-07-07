@@ -1,7 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <OutputType>Exe</OutputType>
         <TargetFramework>net7.0</TargetFramework>
         <RootNamespace>tavern_cli</RootNamespace>
         <ImplicitUsings>enable</ImplicitUsings>
@@ -10,6 +9,7 @@
 
     <ItemGroup>
       <PackageReference Include="AI.Dev.OpenAI.GPT" Version="1.0.2" />
+      <PackageReference Include="JObject" Version="1.0.0" />
       <PackageReference Include="Microsoft.DeepDev.TokenizerLib" Version="1.3.2" />
       <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
       <PackageReference Include="OpenAI" Version="1.7.2" />
