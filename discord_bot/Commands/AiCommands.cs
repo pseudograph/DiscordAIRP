@@ -1,3 +1,5 @@
+using System.Runtime.InteropServices.JavaScript;
+using System.Text;
 using DSharpPlus;
 using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
@@ -16,7 +18,7 @@ public class AiCommands : ApplicationCommandModule
         await ctx.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource);
 
         tavern_cli.Bot bot = new tavern_cli.Bot(Consts.TavernBotJson, Consts.TavernConfigJson);
-        var history = await ctx.Channel.GetMessagesAsync();
+        var history = await ctx.Channel.GetMessagesAsync(Consts.HistoryLimit);
         var chatHistory = ConvertChatHistory(history);
         var newMessage = new ChatMessage(ChatMessageRole.User, message);
         newMessage.Name = ctx.User.Username;
@@ -42,11 +44,13 @@ public class AiCommands : ApplicationCommandModule
     public static async Task Chat(MessageCreateEventArgs e)
     {
         tavern_cli.Bot bot = new tavern_cli.Bot(Consts.TavernBotJson, Consts.TavernConfigJson);
-        var history = await e.Channel.GetMessagesAsync();
+        var history = await e.Channel.GetMessagesAsync(Consts.HistoryLimit);
         var chatHistory = ConvertChatHistory(history);
-        var newMessage = new ChatMessage(ChatMessageRole.User, e.Message.Content);
-        newMessage.Name = e.Author.Username;
-        chatHistory.Add(newMessage);
+        var newMessage = new ChatMessage(ChatMessageRole.User, e.Message.Content)
+        {
+            Name = e.Author.Username
+        };
+        // Skip adding latest message to history, since it's already included.
         Console.WriteLine("[AiCommands::Chat(Event Overload)]: Chat history size: " + chatHistory.Count);
         foreach (ChatMessage msg in chatHistory)
         {
@@ -54,7 +58,7 @@ public class AiCommands : ApplicationCommandModule
         }
         Console.WriteLine("[AiCommands::Chat(Event Overload)]: Sending messages.");
         var resultStringArray = await Chat(bot, e.Author.Username, chatHistory);
-        
+
         await e.Message.RespondAsync(resultStringArray[0]);
         for (int i = 1; i < resultStringArray.Count; i++)
         {
@@ -67,6 +71,8 @@ public class AiCommands : ApplicationCommandModule
     {
         var result = await bot.SendBulkMessages(chatHistory);
         var resultString = ReplacePlaceholderNames(result.ToString(), username, Consts.CharName);
+        // forced lowercase lmeow
+        resultString = resultString.ToLower();
         var resultStringArray = SplitStringByLength(resultString, 2000);
         Console.WriteLine("[AiCommands::Chat]: Result:" + resultString);
         Console.WriteLine("[AiCommands::Chat]: Result length: " + resultString.Length);
@@ -89,7 +95,23 @@ public class AiCommands : ApplicationCommandModule
     {
         result = result.Replace("{{char}}", charname);
         result = result.Replace("{{user}}", username);
-        return result;
+        var resultLines = result.Split('\n');
+        var trimmedResultLines = new List<string>();
+        foreach (var line in resultLines)
+        {
+            var firstSpace = line.IndexOf(' ');
+            if (firstSpace > 0 && line[firstSpace - 1] == ':') 
+            {
+                trimmedResultLines.Add(line.Substring(firstSpace + 1));
+            }
+            else
+            {
+                trimmedResultLines.Add(line);
+            }
+        }
+
+        var trimmedResult = String.Join('\n', trimmedResultLines);
+        return trimmedResult;
     }
 
     private static IList<ChatMessage> ConvertChatHistory(IReadOnlyList<DiscordMessage> history)
@@ -99,6 +121,7 @@ public class AiCommands : ApplicationCommandModule
         for (int i = history.Count - 1; i >= 0; i -= 1) 
         {
             ChatMessageRole role;
+            // ASSUMES ALL BOT MESSAGES ARE FROM THE BOT!! CHANGE THIS!!
             role = history[i].Author.IsBot ? ChatMessageRole.Assistant : ChatMessageRole.User;
             var contents = history[i].Content;
             if (contents.Length == 0)
@@ -106,7 +129,12 @@ public class AiCommands : ApplicationCommandModule
                 continue;
             }
             ChatMessage newMessage = new ChatMessage(role, contents);
-            if (role.Equals(ChatMessageRole.User)) newMessage.Name = history[i].Author.Username;
+            if (role.Equals(ChatMessageRole.User))
+            {
+                var username = new string(history[i].Author.Username.Where(c => !char.IsPunctuation(c)).ToArray());
+                newMessage.Name = username;
+            }
+            else if (role.Equals(ChatMessageRole.Assistant)) newMessage.Name = Consts.CharName;
             chatHistory.Add(newMessage);
         }
         return chatHistory;

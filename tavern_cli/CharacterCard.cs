@@ -19,11 +19,11 @@ public class CharacterCard
     {
         var result = new List<ChatMessage>();
         if (description != null)
-            result.Add(new ChatMessage(ChatMessageRole.Assistant, description));
+            result.Add(new ChatMessage(ChatMessageRole.System, description));
         if (scenario != null)
-            result.Add(new ChatMessage(ChatMessageRole.Assistant, scenario));
+            result.Add(new ChatMessage(ChatMessageRole.System, scenario));
         if (example_dialogue != null)
-            result.Add(new ChatMessage(ChatMessageRole.Assistant, example_dialogue));
+            result.Add(new ChatMessage(ChatMessageRole.System, example_dialogue));
         return result;
     }
 }

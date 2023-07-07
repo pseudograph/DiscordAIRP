@@ -49,12 +49,35 @@ public class Bot
 
         Client.MessageCreated += async (s, e) =>
         {
-            if (!e.Author.IsBot && e.Message.Content.ToLower().Contains(Consts.CharName))
+            if (DetectBotName(s, e)) 
             {
-                Console.WriteLine("[DISCORD_BOT]: New message containing" + Consts.CharName + " detected.");
                 await AiCommands.Chat(e);
             }
         };
+    }
+
+    private bool DetectBotName(DiscordClient s, MessageCreateEventArgs e)
+    {
+        if (!e.Author.IsBot && e.Message.Content.ToLower().Contains(Consts.CharName.ToLower()))
+        {
+            Console.WriteLine("[DISCORD_BOT]: New message containing" + Consts.CharName + " detected.");
+            return true;
+        }
+
+        if (e.MentionedUsers.Count <= 0) return false;
+        foreach (var user in e.MentionedUsers)
+        {
+            Console.WriteLine("[DISCORD_BOT]: Mentioned user: " + user.Username);
+            Console.WriteLine("[DISCORD_BOT]: Current DiscordUsername: " + Consts.DiscordUsername);
+            if (e.Author.IsBot) continue;
+            if (user.Username.ToLower().Contains(Consts.DiscordUsername.ToLower()))
+            {
+                Console.WriteLine("[DISCORD_BOT]: New mention containing" + user.Username + " detected.");
+                return true;
+            }
+        }
+
+        return false;    
     }
 
     private Task OnClientReady(DiscordClient client, ReadyEventArgs e)

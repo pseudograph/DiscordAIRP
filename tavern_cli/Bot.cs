@@ -49,6 +49,7 @@ public class Bot
         var payload = CharacterCard.ToChatMessages();
         payload.AddRange(messages);
         var reply = await Gateway.SendMessages(payload);
+        Console.WriteLine("[Bot::SendBulkMessages]: reply: " + reply);
         return reply;
     }
 

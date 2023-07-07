@@ -32,6 +32,12 @@ public class OpenAiGateway
         messages.Insert(0, Config!.NsfwPrompt);
         messages.Insert(0, Config!.MainPrompt);
         messages.Add(Config!.SystemPrompt);
+        var array = messages.ToArray();
+        foreach (var message in array)
+        {
+            Console.WriteLine("[OpenAiGateway::SendMessages]: [" + message.Role + "]"
+                              + "[" + message.Name + "]: " + message.Content);
+        }
 
         ChatResult result;
         do
