@@ -1,0 +1,10 @@
+﻿{
+  "Token": "discord_bot_token_here",
+  "Prefix": "?",
+  "TestGuild": test_guild_id,
+  "TavernConfigJson": "TavernConfig.json",
+  "TavernBotJson": "Rin.json",
+  "CharName": "char name to scan messages for (case-insensitive)",
+  "DiscordUsername": "discord username without #1234 identifier",
+  "HistoryLimit": 20
+}

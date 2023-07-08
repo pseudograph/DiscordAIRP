@@ -4,7 +4,6 @@ using DSharpPlus;
 using DSharpPlus.EventArgs;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using DSharpPlus.SlashCommands;
 
 namespace discord_bot;
 
@@ -50,11 +49,16 @@ public class Bot
         Client = new DiscordClient(config);
         Client.Ready += OnClientReady;
         
+        /*
+        Commented out because AiCommands::Chat takes configJson without an Option attribute, causing a crash.
+        TODO: Figure out how to pass configJson to AiCommands::Chat without the Option attribute.
         var slash = Client.UseSlashCommands();
-
+        Console.WriteLine("[DISCORD_BOT]: Initialising SlashCommands."); 
         slash.RegisterCommands<AiCommands>(configJson.TestGuild);
         slash.RegisterCommands<MiscCommands>(configJson.TestGuild);
-
+        Console.WriteLine("[DISCORD_BOT]: SlashCommands initialised.");
+        */
+        
         Client.MessageCreated += async (_, e) =>
         {
             if (DetectBotName(e, configJson)) 

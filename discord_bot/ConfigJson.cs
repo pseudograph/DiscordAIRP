@@ -10,8 +10,6 @@ public struct ConfigJson
     public string Prefix { get; set; }
     [JsonProperty("TestGuild")] 
     public ulong TestGuild { get; set;  }
-    [JsonProperty("DiscordConfigJson")] 
-    public string DiscordConfigJson { get; set; }
     [JsonProperty("TavernConfigJson")] 
     public string TavernConfigJson { get; set; }
     [JsonProperty("TavernBotJson")] 

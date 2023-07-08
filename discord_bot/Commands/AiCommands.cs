@@ -11,6 +11,7 @@ public class AiCommands : ApplicationCommandModule
     /**
      * This is the slash command overload for the Chat command. It is used when the slash command is called.
      * Calls the Chat function to send messages to the bot.
+     * Currently BROKEN because it takes configJson as an argument without an Option attribute.
      */ 
     [SlashCommand("chat", "Send the bot a message, including the current channel's history.")]
     public async Task Chat(InteractionContext ctx, [Option("message", "Message to send")] string message, 
