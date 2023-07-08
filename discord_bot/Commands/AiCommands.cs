@@ -151,6 +151,8 @@ public class AiCommands : ApplicationCommandModule
             {
                 var username = new string(history[i].Author.Username.Where(c => !char.IsPunctuation(c)).ToArray());
                 newMessage.Name = username;
+                if (configJson.PrefixUsernamesToMessages)
+                    newMessage.Content = newMessage.Content.Insert(0, username + ": ");
             }
             else if (role.Equals(ChatMessageRole.Assistant)) newMessage.Name = configJson.CharName;
             chatHistory.Add(newMessage);

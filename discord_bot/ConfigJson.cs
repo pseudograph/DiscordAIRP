@@ -20,4 +20,6 @@ public struct ConfigJson
     public string DiscordUsername { get; set; }
     [JsonProperty("HistoryLimit")] 
     public int HistoryLimit { get; set; }
+    [JsonProperty("PrefixUsernamesToMessages")]
+    public bool PrefixUsernamesToMessages { get; set; }
 }
