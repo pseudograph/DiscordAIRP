@@ -1,4 +1,10 @@
 ﻿{
-  "token": "your token here",
-  "prefix": "?"
+  "Token": "your token here",
+  "Prefix": "?",
+  "TestGuild": 635460585001189394,
+  "TavernConfigJson": "TavernConfig.json",
+  "TavernBotJson": "Rin.json",
+  "CharName": "rin",
+  "DiscordUsername": "xX--RiN_ToHsAkA--Xx",
+  "HistoryLimit": 20
 }

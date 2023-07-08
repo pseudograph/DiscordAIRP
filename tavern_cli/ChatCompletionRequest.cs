@@ -3,6 +3,9 @@ using Newtonsoft.Json;
 namespace tavern_cli;
 
 
+/**
+ * Represents a request to the OpenAI API.
+ */
 public class ChatCompletionRequest
 {
     [JsonProperty("model")]

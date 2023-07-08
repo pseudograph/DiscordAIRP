@@ -8,7 +8,11 @@ using DSharpPlus.SlashCommands;
 
 namespace discord_bot;
 
-public class DiscordBot
+/**
+ * Entry point for the program.
+ * Instantiates a Bot and calls Run().GetAwaiter().GetResult() to start the bot.
+ */
+public static class DiscordBot
 {
     public static void Main(string[] args)
     {
@@ -17,9 +21,13 @@ public class DiscordBot
     }
 }
 
+/**
+ * Main Bot class.
+ * Instantiate this and call Run().GetAwaiter().GetResult() to start the bot.
+ */
 public class Bot
 {
-    public DiscordClient Client { get; private set; }
+    private DiscordClient Client { get; set; }
 
     public Bot()
     {
@@ -44,23 +52,28 @@ public class Bot
         
         var slash = Client.UseSlashCommands();
 
-        slash.RegisterCommands<AiCommands>(Consts.TestGuild);
-        slash.RegisterCommands<MiscCommands>(Consts.TestGuild);
+        slash.RegisterCommands<AiCommands>(configJson.TestGuild);
+        slash.RegisterCommands<MiscCommands>(configJson.TestGuild);
 
-        Client.MessageCreated += async (s, e) =>
+        Client.MessageCreated += async (_, e) =>
         {
-            if (DetectBotName(s, e)) 
+            if (DetectBotName(e, configJson)) 
             {
-                await AiCommands.Chat(e);
+                await AiCommands.Chat(e, configJson);
             }
         };
     }
 
-    private bool DetectBotName(DiscordClient s, MessageCreateEventArgs e)
+    /**
+     * Detects messages that mention the bot by name or by @mention.
+     * Ignores messages by other bots.
+     * Attach this to the MessageCreated event under DiscordClient.
+     */
+    private bool DetectBotName(MessageCreateEventArgs e, ConfigJson configJson)
     {
-        if (!e.Author.IsBot && e.Message.Content.ToLower().Contains(Consts.CharName.ToLower()))
+        if (!e.Author.IsBot && e.Message.Content.ToLower().Contains(configJson.CharName.ToLower()))
         {
-            Console.WriteLine("[DISCORD_BOT]: New message containing" + Consts.CharName + " detected.");
+            Console.WriteLine("[DISCORD_BOT]: New message containing" + configJson.CharName + " detected.");
             return true;
         }
 
@@ -68,9 +81,9 @@ public class Bot
         foreach (var user in e.MentionedUsers)
         {
             Console.WriteLine("[DISCORD_BOT]: Mentioned user: " + user.Username);
-            Console.WriteLine("[DISCORD_BOT]: Current DiscordUsername: " + Consts.DiscordUsername);
+            Console.WriteLine("[DISCORD_BOT]: Current DiscordUsername: " + configJson.DiscordUsername);
             if (e.Author.IsBot) continue;
-            if (user.Username.ToLower().Contains(Consts.DiscordUsername.ToLower()))
+            if (user.Username.ToLower().Contains(configJson.DiscordUsername.ToLower()))
             {
                 Console.WriteLine("[DISCORD_BOT]: New mention containing" + user.Username + " detected.");
                 return true;

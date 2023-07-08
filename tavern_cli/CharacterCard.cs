@@ -2,7 +2,12 @@ using OpenAI_API.Chat;
 
 namespace tavern_cli;
 
-// CharacterCard myDeserializedClass = JsonConvert.DeserializeObject<CharacterCard>(myJsonResponse);
+/**
+ * Represents a Character Card.
+ * Fields of the card are combined into a single prompt to be sent to the OpenAI API.
+ * For now, only the description, scenario and example_dialogue are sent.
+ * Add to the chain of if statements to include more fields.
+ */
 public class CharacterCard
 {
     public string? description { get; set; }

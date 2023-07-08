@@ -1,9 +1,11 @@
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using OpenAI_API.Chat;
 
 namespace tavern_cli;
 
+/**
+ * A bot that contains a Character Card and can communicate with the OpenAi API via an OpenAiGateway.
+ */
 public class Bot
 {
     private OpenAiGateway Gateway { get; set; }
@@ -30,12 +32,18 @@ public class Bot
         Gateway = gateway;
     }
 
-    public Task<ChatResult> SendMessage(string message)
+    /**
+     * Overload for SendMessage that takes a string instead of a ChatMessage.
+     */
+    public Task<ChatResult?> SendMessage(string message)
     {
         return SendMessage(new ChatMessage(ChatMessageRole.User, message));
     }
 
-    public async Task<ChatResult> SendBulkMessages(IList<ChatMessage> messages)
+    /**
+     * Sends a List of messages to OpenAI, including the CharacterCard and returns the response.
+     */
+    public async Task<ChatResult?> SendBulkMessages(IList<ChatMessage> messages)
     {
         if (CharacterCard == null)
         {
@@ -53,7 +61,12 @@ public class Bot
         return reply;
     }
 
-    private async Task<ChatResult> SendMessage(ChatMessage message)
+    /**
+     * Sends a message to OpenAI, including the CharacterCard and returns the response.
+     * Currently unused as we use SendBulkMessages along with a chatlog to simulate a chat history.
+     * Use this if you want the bot to keep track of its own chat history.
+     */
+    private async Task<ChatResult?> SendMessage(ChatMessage message)
     {
         if (CharacterCard == null)
         {
@@ -68,7 +81,7 @@ public class Bot
         var payload = CharacterCard.ToChatMessages();
         payload.AddRange(History);
         var reply = await Gateway.SendMessages(payload);
-        History.Add(new ChatMessage(ChatMessageRole.Assistant, reply.ToString()));
+        History.Add(new ChatMessage(ChatMessageRole.Assistant, reply!.ToString()));
         return reply;
     }
 }

@@ -2,15 +2,16 @@ using AI.Dev.OpenAI.GPT;
 using Newtonsoft.Json;
 using OpenAI_API;
 using OpenAI_API.Chat;
-using OpenAI_API.Models;
 
 namespace tavern_cli;
 
+/**
+ * Handles communication with the OpenAI API.
+ */
 public class OpenAiGateway
 {
     private Config? Config { get; set; }
     private OpenAIAPI? Api { get; set; }
-    private Model Model { get; set; } = Model.ChatGPTTurbo;
     private long? MaxRequestTokens { get; set; }
 
     public OpenAiGateway(string configPath = "TavernConfig.json")
@@ -26,21 +27,19 @@ public class OpenAiGateway
         MaxRequestTokens = Config!.MaxTokens - usedTokenCount;
     }
 
-    public async Task<ChatResult> SendMessages(List<ChatMessage> messages)
+    /**
+     * Sends a List of ChatMessages to OpenAI and returns the response.
+     * Inserts the Main, NSFW, and System prompts into the messages.
+     * Will continue retrying until it receives a valid response.
+     */
+    public async Task<ChatResult?> SendMessages(List<ChatMessage> messages)
     {
         IsGatewayValid();
         messages.Insert(0, Config!.NsfwPrompt);
         messages.Insert(0, Config!.MainPrompt);
         messages.Add(Config!.SystemPrompt);
-        var array = messages.ToArray();
-        foreach (var message in array)
-        {
-            Console.WriteLine("[OpenAiGateway::SendMessages]: [" + message.Role + "]"
-                              + "[" + message.Name + "]: " + message.Content);
-        }
 
-        
-        ChatResult result = new ChatResult();
+        ChatResult? result = null;
         do
         {
             try
@@ -56,18 +55,25 @@ public class OpenAiGateway
                     Messages = messages.ToArray()
                 });
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                Console.WriteLine("[OpenAiGateway::SendMessages]: Exception caught, retrying...");
+                Console.WriteLine("[OpenAiGateway::SendMessages]: Exception caught" + e.Message);
+                Console.WriteLine("[OpenAiGateway::SendMessages]: Retrying...");
             }
-        } while (result.ToString().Length < 5);
+
+            await Task.Delay(5000);
+        } while (result is null || result.ToString().Length < 5);
 
         Console.WriteLine(result.ToString());
 
         return result;
     }
 
-    public long GetPromptTokenCount()
+    /**
+     * Gets the token count of the Main, NSFW, and System prompts combined.
+     * This is used to calculate the MaxTokens that can be used for chat history.
+     */
+    private long GetPromptTokenCount()
     {
         if (Config == null)
         {
@@ -84,11 +90,6 @@ public class OpenAiGateway
         string json = File.ReadAllText(configPath);
         Config = JsonConvert.DeserializeObject<Config>(json)
                  ?? throw new InvalidOperationException("Config is null");
-    }
-
-    public void InitConfig(Config config)
-    {
-        Config = config;
     }
 
     private void InitApi()
