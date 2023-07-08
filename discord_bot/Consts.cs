@@ -7,6 +7,6 @@ public abstract class Consts
     public const string TavernConfigJson = "TavernConfig.json";
     public const string TavernBotJson = "Rin.json";
     public const string CharName = "rin";
-    public const string DiscordUsername = "xX--RiN_FuYuKi--Xx";
+    public const string DiscordUsername = "xX--RiN_ToHsAkA--Xx";
     public const int HistoryLimit = 30;
 }

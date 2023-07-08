@@ -39,19 +39,27 @@ public class OpenAiGateway
                               + "[" + message.Name + "]: " + message.Content);
         }
 
-        ChatResult result;
+        
+        ChatResult result = new ChatResult();
         do
         {
-            result = await Api!.Chat.CreateChatCompletionAsync(new ChatRequest
+            try
             {
-                Model = Config!.Model,
-                Temperature = Config!.Temperature,
-                MaxTokens = Config.MaxTokens,
-                FrequencyPenalty = Config.FrequencyPenalty,
-                PresencePenalty = Config.PresencePenalty,
-                LogitBias = Config.LogitBias,
-                Messages = messages.ToArray()
-            });
+                result = await Api!.Chat.CreateChatCompletionAsync(new ChatRequest
+                {
+                    Model = Config!.Model,
+                    Temperature = Config!.Temperature,
+                    MaxTokens = Config.MaxTokens,
+                    FrequencyPenalty = Config.FrequencyPenalty,
+                    PresencePenalty = Config.PresencePenalty,
+                    LogitBias = Config.LogitBias,
+                    Messages = messages.ToArray()
+                });
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("[OpenAiGateway::SendMessages]: Exception caught, retrying...");
+            }
         } while (result.ToString().Length < 5);
 
         Console.WriteLine(result.ToString());

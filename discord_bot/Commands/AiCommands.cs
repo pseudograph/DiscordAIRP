@@ -46,10 +46,6 @@ public class AiCommands : ApplicationCommandModule
         tavern_cli.Bot bot = new tavern_cli.Bot(Consts.TavernBotJson, Consts.TavernConfigJson);
         var history = await e.Channel.GetMessagesAsync(Consts.HistoryLimit);
         var chatHistory = ConvertChatHistory(history);
-        var newMessage = new ChatMessage(ChatMessageRole.User, e.Message.Content)
-        {
-            Name = e.Author.Username
-        };
         // Skip adding latest message to history, since it's already included.
         Console.WriteLine("[AiCommands::Chat(Event Overload)]: Chat history size: " + chatHistory.Count);
         foreach (ChatMessage msg in chatHistory)
