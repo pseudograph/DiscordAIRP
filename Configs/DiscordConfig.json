@@ -7,5 +7,5 @@
   "CharName": "char name to scan messages for (case-insensitive)",
   "DiscordUsername": "discord username without #1234 identifier",
   "HistoryLimit": 20,
-  "PrefixUsernameToMessages": true
+  "PrefixUsernameToMessages": false
 }
