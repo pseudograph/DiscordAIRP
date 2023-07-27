@@ -10,6 +10,7 @@ public class Config
     public ChatMessage MainPrompt { get; set; }
     public ChatMessage NsfwPrompt { get; set; }
     public ChatMessage SystemPrompt { get; set; }
+    public int RetryTimeout { get; set; }
     public Model Model { get; set; }
     public float Temperature { get; set; }
     public int? MaxTokens { get; set; }

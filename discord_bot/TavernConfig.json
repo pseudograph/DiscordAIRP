@@ -4,6 +4,7 @@
   "MainPrompt": "MainPrompt",
   "NsfwPrompt": "NsfwPrompt",
   "SystemPrompt": "SystemPrompt",
+  "RetryTimeout": 30000,
   "Model": "turbo",
   "Temperature": 0.9,
   "MaxTokens": 1000,

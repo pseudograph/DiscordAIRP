@@ -61,7 +61,7 @@ public class OpenAiGateway
                 Console.WriteLine("[OpenAiGateway::SendMessages]: Retrying...");
             }
 
-            await Task.Delay(5000);
+            await Task.Delay(Config.RetryTimeout);
         } while (result is null || result.ToString().Length < 5);
 
         Console.WriteLine(result.ToString());
